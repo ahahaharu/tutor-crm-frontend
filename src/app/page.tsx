@@ -1,63 +1,47 @@
-import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl leading-10 font-semibold tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{' '}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{' '}
-            or the{' '}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{' '}
-            center.
-          </p>
+    <div className="flex min-h-screen flex-col">
+      <header className="flex h-16 items-center justify-between border-b px-6 lg:px-12">
+        <div className="flex items-center gap-2">
+          <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-lg font-bold">
+            T
+          </div>
+          <span className="text-xl font-bold tracking-tight">Tutor CRM</span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="bg-foreground text-background flex h-12 w-full items-center justify-center gap-2 rounded-full px-5 transition-colors hover:bg-[#383838] md:w-[158px] dark:hover:bg-[#ccc]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <nav className="flex gap-4">
+          <Button variant="ghost" className="text-base font-semibold" asChild>
+            <Link href="/login">Войти</Link>
+          </Button>
+          <Button className="px-6 text-base font-semibold" asChild>
+            <Link href="/register">Регистрация</Link>
+          </Button>
+        </nav>
+      </header>
+
+      <main className="from-background to-muted/50 flex flex-1 flex-col items-center justify-center bg-gradient-to-b px-4 text-center sm:px-6 lg:px-8">
+        <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+          Управляйте своими уроками <br className="hidden sm:block" />
+          <span className="text-primary">просто и эффективно</span>
+        </h1>
+        <p className="text-muted-foreground mt-6 max-w-2xl text-lg sm:text-xl">
+          Автоматизация расписания, учет финансов и удобная база учеников для
+          современных репетиторов. Всё в одном месте.
+        </p>
+        <div className="mt-10 flex gap-4">
+          <Button size="lg" className="h-12 px-8 text-lg font-semibold" asChild>
+            <Link href="/register">Начать бесплатно</Link>
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="h-12 px-8 text-lg font-semibold"
+            asChild
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] md:w-[158px] dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <Link href="/login">У меня уже есть аккаунт</Link>
+          </Button>
         </div>
       </main>
     </div>
