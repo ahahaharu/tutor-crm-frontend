@@ -15,7 +15,7 @@ export default function Home() {
           <Button variant="ghost" className="text-base font-semibold" asChild>
             <Link href="/login">Войти</Link>
           </Button>
-          <Button className="px-6 text-base font-semibold" asChild>
+          <Button className="px-3 py-2 text-base font-semibold" asChild>
             <Link href="/register">Регистрация</Link>
           </Button>
         </nav>
