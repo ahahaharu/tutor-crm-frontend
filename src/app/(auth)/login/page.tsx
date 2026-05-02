@@ -22,9 +22,14 @@ export default function LoginPage() {
 
   async function onSubmit(data: LoginInput) {
     try {
-      await loginAction(data);
+      const result = await loginAction(data);
+
+      if (result?.error) {
+        form.setError('root', { message: result.error });
+      }
     } catch (error) {
       console.error(error);
+      form.setError('root', { message: 'Произошла непредвиденная ошибка' });
     }
   }
 
@@ -80,6 +85,12 @@ export default function LoginPage() {
               </Field>
             )}
           />
+
+          {form.formState.errors.root && (
+            <div className="text-destructive text-center text-sm font-medium">
+              {form.formState.errors.root.message}
+            </div>
+          )}
 
           <Button
             type="submit"
