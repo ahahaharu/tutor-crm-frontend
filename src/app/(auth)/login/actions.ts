@@ -3,7 +3,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { type LoginInput } from './schema';
-import { error } from 'console';
 
 export async function loginAction(values: LoginInput) {
   let isSuccess = false;

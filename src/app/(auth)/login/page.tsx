@@ -11,6 +11,8 @@ import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { loginSchema, type LoginInput } from './schema';
 import { loginAction } from './actions';
 
+import { ArrowLeft } from 'lucide-react';
+
 export default function LoginPage() {
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -34,7 +36,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="bg-muted/30 flex min-h-screen items-center justify-center p-4">
+    <div className="bg-muted/30 relative flex min-h-screen items-center justify-center p-4">
+      <Link
+        href="/"
+        className="text-muted-foreground hover:text-foreground absolute top-4 left-4 flex items-center gap-2 text-sm font-medium transition-colors md:top-8 md:left-8"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        На главную
+      </Link>
       <div className="bg-card w-full max-w-sm rounded-xl border p-8 shadow-sm">
         <div className="mb-6 flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">
