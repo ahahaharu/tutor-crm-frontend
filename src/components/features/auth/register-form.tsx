@@ -61,6 +61,7 @@ export function RegisterForm() {
                 id={field.name}
                 placeholder="Иван Иванов"
                 aria-invalid={fieldState.invalid}
+                autoFocus
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

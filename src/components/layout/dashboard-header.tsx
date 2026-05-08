@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Logo } from './logo';
+import { logoutAction } from '@/app/(auth)/logout-action';
 
 export const DashboardHeader = () => {
   return (
@@ -11,9 +12,11 @@ export const DashboardHeader = () => {
         <span className="text-muted-foreground hidden text-sm sm:inline-block">
           Привет, Репетитор!
         </span>
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/login">Выйти</Link>
-        </Button>
+        <form action={logoutAction}>
+          <Button variant="outline" size="sm" type="submit">
+            Выйти
+          </Button>
+        </form>
       </div>
     </header>
   );

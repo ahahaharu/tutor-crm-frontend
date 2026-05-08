@@ -10,6 +10,8 @@ import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 
 import { loginSchema, type LoginInput } from '@/app/(auth)/login/schema';
 import { loginAction } from '@/app/(auth)/login/actions';
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export function LoginForm() {
   const form = useForm<LoginInput>({
@@ -19,6 +21,8 @@ export function LoginForm() {
       password: '',
     },
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onSubmit(data: LoginInput) {
     try {
@@ -56,6 +60,7 @@ export function LoginForm() {
                 type="email"
                 placeholder="tutor@example.com"
                 aria-invalid={fieldState.invalid}
+                autoFocus
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -68,13 +73,28 @@ export function LoginForm() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor={field.name}>Пароль</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                type="password"
-                placeholder="••••••••"
-                aria-invalid={fieldState.invalid}
-              />
+              <div className="relative">
+                <Input
+                  {...field}
+                  id={field.name}
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  aria-invalid={fieldState.invalid}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="text-muted-foreground h-4 w-4" />
+                  ) : (
+                    <Eye className="text-muted-foreground h-4 w-4" />
+                  )}
+                </Button>
+              </div>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
