@@ -17,15 +17,14 @@ export async function registerAction(
     });
 
     if (!response.ok) {
-      if (response.status === 400) {
-        const errorData = await response.json();
-        const errorMessage = Array.isArray(errorData.message)
-          ? errorData.message[0]
-          : errorData.message || 'Ошибка регистрации';
+      const errorData = await response.json();
 
-        return { error: errorMessage };
-      }
-      return { error: `Ошибка сервера: ${response.status}` };
+      return {
+        // Твой фильтр всегда возвращает message как массив, берем первый элемент
+        error: errorData.message?.[0] || 'Ошибка сервера',
+        code: errorData.code || 'UNKNOWN_ERROR',
+        field: errorData.field,
+      };
     }
 
     const data = await response.json();

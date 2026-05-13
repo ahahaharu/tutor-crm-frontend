@@ -17,13 +17,13 @@ export async function loginAction(values: LoginInput) {
     });
 
     if (!response.ok) {
-      if (response.status === 401) {
-        return { error: 'Неверный email или пароль' };
-      }
-      if (response.status === 429) {
-        return { error: 'Слишком много попыток. Попробуйте позже.' };
-      }
-      return { error: `Ошибка сервера: ${response.status}` };
+      const errorData = await response.json();
+
+      return {
+        error: errorData.message?.[0] || 'Ошибка сервера',
+        code: errorData.code || 'UNKNOWN_ERROR',
+        field: errorData.field,
+      };
     }
 
     const data = await response.json();

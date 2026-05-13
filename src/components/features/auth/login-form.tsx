@@ -27,8 +27,15 @@ export function LoginForm() {
   async function onSubmit(data: LoginInput) {
     try {
       const result = await loginAction(data);
+      console.log('ОТВЕТ ОТ ЭКШЕНА:', result);
+
       if (result?.error) {
-        form.setError('root', { message: result.error });
+        if (result.code === 'INVALID_CREDENTIALS') {
+          form.setError('email', { type: 'server', message: '' });
+          form.setError('password', { type: 'server', message: result.error });
+        } else {
+          form.setError('root', { message: result.error });
+        }
       }
     } catch (error) {
       console.error(error);

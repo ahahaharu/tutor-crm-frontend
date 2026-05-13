@@ -29,11 +29,19 @@ export function RegisterForm() {
     try {
       const { confirmPassword, ...dataToSend } = data;
       const result = await registerAction(dataToSend);
+
       if (result?.error) {
-        form.setError('root', { message: result.error });
+        if (
+          result.field === 'email' ||
+          result.code === 'EMAIL_ALREADY_EXISTS'
+        ) {
+          form.setError('email', { type: 'server', message: result.error });
+        } else {
+          form.setError('root', { message: result.error });
+        }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       form.setError('root', { message: 'Произошла непредвиденная ошибка' });
     }
   }
