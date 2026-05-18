@@ -57,7 +57,11 @@ export function RegisterForm() {
         </p>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+        noValidate
+      >
         <Controller
           name="name"
           control={form.control}
@@ -113,6 +117,7 @@ export function RegisterForm() {
                   variant="ghost"
                   size="sm"
                   className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
+                  data-testid="toggle-password"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
                   {showPassword ? (
@@ -145,6 +150,7 @@ export function RegisterForm() {
                   type="button"
                   variant="ghost"
                   size="sm"
+                  data-testid="toggle-password"
                   className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
                 >
@@ -161,7 +167,10 @@ export function RegisterForm() {
         />
 
         {form.formState.errors.root && (
-          <div className="text-destructive text-center text-sm font-medium">
+          <div
+            data-testid="root-error"
+            className="text-destructive text-center text-sm font-medium"
+          >
             {form.formState.errors.root.message}
           </div>
         )}

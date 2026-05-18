@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { loginSchema } from './schema';
 
 describe('Login Schema', () => {
-  it('должна проходить валидацию с корректными данными', () => {
+  it('should pass validation with valid data', () => {
     const result = loginSchema.safeParse({
       email: 'tutor@test.com',
       password: 'Password123!',
@@ -11,7 +11,7 @@ describe('Login Schema', () => {
     expect(result.success).toBe(true);
   });
 
-  it('должна выдавать ошибку при некорректном email', () => {
+  it('should fail validation with an invalid email', () => {
     const result = loginSchema.safeParse({
       email: 'not-an-email',
       password: 'Password123!',
@@ -24,7 +24,7 @@ describe('Login Schema', () => {
     }
   });
 
-  it('должна выдавать ошибку, если пароль короче 6 символов', () => {
+  it('should fail validation if password is shorter than 6 characters', () => {
     const result = loginSchema.safeParse({
       email: 'tutor@test.com',
       password: '12345',

@@ -54,7 +54,11 @@ export function LoginForm() {
         </p>
       </div>
 
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6"
+        noValidate
+      >
         <Controller
           name="email"
           control={form.control}
@@ -93,6 +97,7 @@ export function LoginForm() {
                   variant="ghost"
                   size="sm"
                   className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
+                  data-testid="toggle-password"
                   onClick={() => setShowPassword((prev) => !prev)}
                 >
                   {showPassword ? (
@@ -108,7 +113,10 @@ export function LoginForm() {
         />
 
         {form.formState.errors.root && (
-          <div className="text-destructive text-center text-sm font-medium">
+          <div
+            data-testid="root-error"
+            className="text-destructive text-center text-sm font-medium"
+          >
             {form.formState.errors.root.message}
           </div>
         )}

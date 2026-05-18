@@ -9,12 +9,12 @@ describe('Register Schema', () => {
     confirmPassword: 'Password123!',
   };
 
-  it('должна проходить валидацию с корректными данными', () => {
+  it('should pass validation with valid data', () => {
     const result = registerSchema.safeParse(validData);
     expect(result.success).toBe(true);
   });
 
-  it('должна выдавать ошибку, если пароли не совпадают', () => {
+  it('should fail validation if passwords do not match', () => {
     const result = registerSchema.safeParse({
       ...validData,
       confirmPassword: 'DifferentPassword!',
@@ -27,7 +27,7 @@ describe('Register Schema', () => {
     }
   });
 
-  it('должна выдавать ошибку, если имя слишком короткое', () => {
+  it('should fail validation if name is too short', () => {
     const result = registerSchema.safeParse({
       ...validData,
       name: 'И',
