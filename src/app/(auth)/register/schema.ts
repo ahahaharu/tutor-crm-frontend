@@ -9,7 +9,9 @@ export const registerSchema = z
     password: z
       .string()
       .min(6, { message: 'Пароль должен содержать миниум 6 символов.' }),
-    confirmPassword: z.string(),
+    confirmPassword: z
+      .string()
+      .min(1, { message: 'Пожалуйста, подтвердите пароль.' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Пароли не совпадают',
