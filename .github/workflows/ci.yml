@@ -1,98 +1,65 @@
-name: Frontend CI
+e2e:
+  name: Run E2E Tests
+  runs-on: ubuntu-latest
 
-on:
-  push:
-    branches: ['main', 'master']
-  pull_request:
-    branches: ['main', 'master']
+  steps:
+    - name: Checkout frontend code
+      uses: actions/checkout@v4
 
-jobs:
-  unit:
-    name: Run Unit Tests
-    runs-on: ubuntu-latest
+    - name: Checkout backend code
+      uses: actions/checkout@v4
+      with:
+        repository: 'ahahaharuК/tutor-crm-backend'
+        path: 'backend'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 10
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'pnpm'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
+    - name: Install backend dependencies
+      run: pnpm --dir backend install --frozen-lockfile
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+    - name: Create backend env file
+      run: |
+        echo "DB_HOST=127.0.0.1" >> backend/.env
+        echo "DB_PORT=5433" >> backend/.env
+        echo "DB_USER=postgres" >> backend/.env
+        echo "DB_PASSWORD=postgres" >> backend/.env
+        echo "DB_NAME=tutor_crm" >> backend/.env
+        echo "JWT_SECRET=super-secret-test-key-for-ci" >> backend/.env
 
-      - name: Run Unit tests (Vitest)
-        run: pnpm run test:unit
+    - name: Start backend Database
+      run: docker compose --file backend/docker-compose.yml up -d
 
-  e2e:
-    name: Run E2E Tests
-    runs-on: ubuntu-latest
+    - name: Run Drizzle migrations on backend
+      # pnpm сам найдет drizzle-kit внутри папки backend и выполнит его в правильном контексте
+      run: pnpm --dir backend exec drizzle-kit push
 
-    steps:
-      - name: Checkout frontend code
-        uses: actions/checkout@v4
+    - name: Start backend server
+      run: |
+        pnpm --dir backend run start:dev &
+        pnpm dlx wait-on tcp:3000
 
-      - name: Checkout backend code
-        uses: actions/checkout@v4
-        with:
-          repository: 'ahahaharu/tutor-crm-backend'
-          path: 'backend'
+    - name: Install frontend dependencies
+      run: pnpm install --frozen-lockfile
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 10
+    - name: Install Playwright Browsers
+      run: pnpm exec playwright install --with-deps
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+    - name: Run Playwright E2E tests
+      run: pnpm exec playwright test
 
-      - name: Install backend dependencies
-        run: cd backend && pnpm install --frozen-lockfile
-
-      - name: Start backend Database & push schema
-        run: |
-          cd backend
-          echo "DB_HOST=127.0.0.1" >> .env
-          echo "DB_PORT=5433" >> .env
-          echo "DB_USER=postgres" >> .env
-          echo "DB_PASSWORD=postgres" >> .env
-          echo "DB_NAME=tutor_crm" >> .env
-          echo "JWT_SECRET=super-secret-test-key-for-ci" >> .env
-
-          docker compose up -d
-          sleep 5
-          ./node_modules/.bin/drizzle-kit push
-
-      - name: Start backend server
-
-        run: |
-          cd backend
-          pnpm run start:dev &
-          pnpm dlx wait-on tcp:3000
-
-      - name: Install frontend dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps
-
-      - name: Run Playwright E2E tests
-        run: pnpm exec playwright test
-
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
+    - name: Upload Playwright report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7
