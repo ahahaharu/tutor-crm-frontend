@@ -71,14 +71,14 @@ jobs:
 
           docker compose up -d
           sleep 5
-          npx drizzle-kit push
+          pnpm exec drizzle-kit push
 
       - name: Start backend server
 
         run: |
           cd backend
           pnpm run start:dev &
-          npx wait-on tcp:3000
+          pnpm dlx wait-on tcp:3000
 
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
