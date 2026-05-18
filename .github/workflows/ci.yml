@@ -71,7 +71,7 @@ jobs:
 
           docker compose up -d
           sleep 5
-          pnpm exec drizzle-kit push
+          ./node_modules/.bin/drizzle-kit push
 
       - name: Start backend server
 
