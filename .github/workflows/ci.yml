@@ -79,6 +79,12 @@ jobs:
 
       - name: Run Drizzle migrations on backend
         working-directory: ./backend
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5433
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_NAME: tutor_crm
         run: pnpm exec drizzle-kit push
 
       - name: Start backend server
