@@ -58,26 +58,31 @@ jobs:
           cache: 'pnpm'
 
       - name: Install backend dependencies
-        run: pnpm --dir backend install --frozen-lockfile
+        working-directory: ./backend
+        run: pnpm install --frozen-lockfile --ignore-workspace
 
       - name: Create backend env file
+        working-directory: ./backend
         run: |
-          echo "DB_HOST=127.0.0.1" >> backend/.env
-          echo "DB_PORT=5433" >> backend/.env
-          echo "DB_USER=postgres" >> backend/.env
-          echo "DB_PASSWORD=postgres" >> backend/.env
-          echo "DB_NAME=tutor_crm" >> backend/.env
-          echo "JWT_SECRET=super-secret-test-key-for-ci" >> backend/.env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=5433" >> .env
+          echo "DB_USER=postgres" >> .env
+          echo "DB_PASSWORD=postgres" >> .env
+          echo "DB_NAME=tutor_crm" >> .env
+          echo "JWT_SECRET=super-secret-test-key-for-ci" >> .env
 
       - name: Start backend Database
-        run: docker compose --file backend/docker-compose.yml up -d
+        working-directory: ./backend
+        run: docker compose up -d
 
       - name: Run Drizzle migrations on backend
-        run: pnpm --dir backend exec drizzle-kit push
+        working-directory: ./backend
+        run: pnpm exec drizzle-kit push
 
       - name: Start backend server
+        working-directory: ./backend
         run: |
-          pnpm --dir backend run start:dev &
+          pnpm run start:dev &
           pnpm dlx wait-on tcp:3000
 
       - name: Install frontend dependencies
