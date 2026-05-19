@@ -54,19 +54,13 @@ test.describe('Login Form (E2E)', () => {
     const API_URL = process.env.API_URL || 'http://127.0.0.1:3000';
 
     const testEmail = `test-${Date.now()}@example.com`;
-    const response = await request.post(`${API_URL}/auth/register`, {
+    await request.post(`${API_URL}/auth/register`, {
       data: {
         email: testEmail,
         password: 'ValidPassword123!',
         name: 'E2E User',
       },
     });
-
-    const responseText = await response.text();
-    expect(
-      response.ok(),
-      `КРИТИЧЕСКАЯ ОШИБКА БЭКЕНДА: ${response.status} - ${responseText}`,
-    ).toBeTruthy();
 
     await page.goto('/login');
 

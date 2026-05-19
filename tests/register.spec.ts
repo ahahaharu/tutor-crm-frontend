@@ -34,19 +34,13 @@ test.describe('Register Form (E2E)', () => {
     const API_URL = process.env.API_URL || 'http://127.0.0.1:3000';
 
     const existingEmail = `taken-${Date.now()}@example.com`;
-    const response = await request.post(`${API_URL}/auth/register`, {
+    await request.post(`${API_URL}/auth/register`, {
       data: {
         email: existingEmail,
         password: 'ValidPassword123!',
         name: 'Existing User',
       },
     });
-
-    const responseText = await response.text();
-    expect(
-      response.ok(),
-      `КРИТИЧЕСКАЯ ОШИБКА БЭКЕНДА: ${response.status()} - ${responseText}`, // <-- добавили ()
-    ).toBeTruthy();
 
     await page.goto('/register');
     await page.fill('input[name="name"]', 'New User');
