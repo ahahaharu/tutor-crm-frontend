@@ -73,7 +73,9 @@ jobs:
 
       - name: Start backend Database
         working-directory: ./backend
-        run: docker compose up -d
+        run: |
+          docker compose up -d
+          sleep 10
 
       - name: Run Drizzle migrations on backend
         working-directory: ./backend
