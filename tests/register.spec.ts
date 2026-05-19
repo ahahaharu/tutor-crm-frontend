@@ -45,7 +45,7 @@ test.describe('Register Form (E2E)', () => {
     const responseText = await response.text();
     expect(
       response.ok(),
-      `КРИТИЧЕСКАЯ ОШИБКА БЭКЕНДА: ${response.status} - ${responseText}`,
+      `КРИТИЧЕСКАЯ ОШИБКА БЭКЕНДА: ${response.status()} - ${responseText}`, // <-- добавили ()
     ).toBeTruthy();
 
     await page.goto('/register');

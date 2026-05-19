@@ -84,7 +84,7 @@ jobs:
       - name: Start backend server
         working-directory: ./backend
         run: |
-          pnpm run start:dev &
+          pnpm run start:dev > server.log 2>&1 &
           pnpm dlx wait-on tcp:3000
 
       - name: Install frontend dependencies
@@ -105,3 +105,8 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+      - name: Print backend logs on failure
+        if: failure()
+        working-directory: ./backend
+        run: cat server.log
