@@ -51,8 +51,10 @@ test.describe('Login Form (E2E)', () => {
     request,
     page,
   }) => {
+    const API_URL = process.env.API_URL || 'http://127.0.0.1:3000';
+
     const testEmail = `test-${Date.now()}@example.com`;
-    await request.post('http://localhost:3000/auth/register', {
+    await request.post(`${API_URL}/auth/register`, {
       data: {
         email: testEmail,
         password: 'ValidPassword123!',

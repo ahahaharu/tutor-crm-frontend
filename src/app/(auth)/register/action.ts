@@ -10,7 +10,9 @@ export async function registerAction(
   let isSuccess = false;
 
   try {
-    const response = await fetch('http://localhost:3000/auth/register', {
+    const API_URL = process.env.API_URL || 'http://127.0.0.1:3000';
+
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),

@@ -94,7 +94,9 @@ jobs:
         run: pnpm exec playwright install --with-deps
 
       - name: Run Playwright E2E tests
-        run: pnpm exec playwright test
+        run: pnpm run test:e2e
+        env:
+          API_URL: http://127.0.0.1:3000
 
       - name: Upload Playwright report
         if: always()
