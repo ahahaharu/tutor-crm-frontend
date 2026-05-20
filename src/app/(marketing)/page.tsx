@@ -12,14 +12,19 @@ export default function Home() {
         Автоматизация расписания, учет финансов и удобная база учеников для
         современных репетиторов. Всё в одном месте.
       </p>
-      <div className="mt-10 flex gap-4">
-        <Button size="lg" className="h-12 px-8 text-lg font-semibold" asChild>
+
+      <div className="mt-10 flex w-full max-w-sm flex-col gap-4 sm:max-w-none sm:flex-row sm:justify-center">
+        <Button
+          size="lg"
+          className="h-12 w-full text-lg font-semibold sm:w-auto sm:px-8"
+          asChild
+        >
           <Link href="/register">Начать бесплатно</Link>
         </Button>
         <Button
           size="lg"
           variant="outline"
-          className="h-12 px-8 text-lg font-semibold"
+          className="h-12 w-full text-lg font-semibold sm:w-auto sm:px-8"
           asChild
         >
           <Link href="/login">У меня уже есть аккаунт</Link>
