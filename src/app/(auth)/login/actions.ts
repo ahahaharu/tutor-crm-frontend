@@ -8,7 +8,9 @@ export async function loginAction(values: LoginInput) {
   let isSuccess = false;
 
   try {
-    const response = await fetch('http://localhost:3000/auth/login', {
+    const API_URL = process.env.API_URL || 'http://127.0.0.1:3000';
+
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
