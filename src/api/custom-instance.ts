@@ -1,25 +1,32 @@
-// src/api/custom-instance.ts
-import Axios, { AxiosRequestConfig } from 'axios';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
-export const AXIOS_INSTANCE = Axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
-});
-
-export const customInstance = <T>(
-  config: AxiosRequestConfig,
-  options?: AxiosRequestConfig,
+export const customInstance = async <T>(
+  url: string,
+  options?: RequestInit,
 ): Promise<T> => {
-  const source = Axios.CancelToken.source();
-  const promise = AXIOS_INSTANCE({
-    ...config,
+  const response = await fetch(`${API_URL}${url}`, {
     ...options,
-    cancelToken: source.token,
-  }).then(({ data }) => data);
 
-  // @ts-expect-error - axios types don't perfectly match here, but it works safely
-  promise.cancel = () => {
-    source.cancel('Query was cancelled');
-  };
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
+  });
 
-  return promise;
+  let data;
+  try {
+    data = await response.json();
+  } catch (error) {
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+    return {} as T;
+  }
+
+  if (!response.ok) {
+    throw data;
+  }
+
+  return data as T;
 };
