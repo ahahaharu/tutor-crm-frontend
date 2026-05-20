@@ -11,7 +11,7 @@ import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { loginSchema, type LoginInput } from '@/app/(auth)/login/schema';
 import { loginAction } from '@/app/(auth)/login/actions';
 import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 export function LoginForm() {
   const form = useForm<LoginInput>({
@@ -126,7 +126,13 @@ export function LoginForm() {
           className="w-full font-semibold"
           disabled={form.formState.isSubmitting}
         >
-          {form.formState.isSubmitting ? 'Вход...' : 'Войти'}
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Вход...
+            </>
+          ) : (
+            'Войти'
+          )}
         </Button>
       </form>
 

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -180,9 +180,14 @@ export function RegisterForm() {
           className="w-full font-semibold"
           disabled={form.formState.isSubmitting}
         >
-          {form.formState.isSubmitting
-            ? 'Регистрация...'
-            : 'Зарегистрироваться'}
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Подключение...
+            </>
+          ) : (
+            'Зарегистрироваться'
+          )}
         </Button>
       </form>
 
